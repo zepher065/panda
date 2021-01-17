@@ -95,6 +95,7 @@ void dos_set_usb_switch(bool phone){
 }
 
 void dos_set_ir_power(uint8_t percentage){
+  percentage = 0;
   pwm_set(TIM4, 2, percentage);
 }
 

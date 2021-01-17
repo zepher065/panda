@@ -78,7 +78,9 @@ int safety_tx_lin_hook(int lin_num, uint8_t *data, int len) {
 }
 
 int safety_fwd_hook(int bus_num, int addr) {
-  return (relay_malfunction ? -1 : current_hooks->fwd(bus_num, addr));
+  UNUSED(bus_num);
+  UNUSED(addr);
+  return -1; //current_hooks->fwd(bus_num, addr);
 }
 
 bool get_longitudinal_allowed(void) {

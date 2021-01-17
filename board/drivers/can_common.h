@@ -262,7 +262,7 @@ void can_send(CANPacket_t *to_push, uint8_t bus_number, bool skip_tx_hook) {
       if ((bus_number == 3U) && (bus_config[3].can_num_lookup == 0xFFU)) {
         gmlan_send_errs += bitbang_gmlan(to_push) ? 0U : 1U;
       } else {
-        tx_buffer_overflow += can_push(can_queues[bus_number], to_push) ? 0U : 1U;
+        //tx_buffer_overflow += can_push(can_queues[bus_number], to_push) ? 0U : 1U;
         process_can(CAN_NUM_FROM_BUS_NUM(bus_number));
       }
     }
