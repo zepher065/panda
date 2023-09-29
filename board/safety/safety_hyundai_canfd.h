@@ -308,9 +308,11 @@ static int hyundai_canfd_tx_hook(CANPacket_t *to_send) {
   }
 
   // UDS: only tester present ("\x02\x3E\x80\x00\x00\x00\x00\x00") allowed on diagnostics address
-  if (((addr == 0x730) && hyundai_canfd_hda2) || ((addr == 0x7D0) && !hyundai_canfd_hda2 && hyundai_longitudinal)) {
-    if ((GET_BYTES(to_send, 0, 4) != 0x00803E02U) || (GET_BYTES(to_send, 4, 4) != 0x0U)) {
-      tx = 0;
+  if (hyundai_longitudinal) {
+    if (((addr == 0x730) && hyundai_canfd_hda2) || ((addr == 0x7D0) && !hyundai_canfd_hda2 && !hyundai_camera_scc)) {
+      if ((GET_BYTES(to_send, 0, 4) != 0x00803E02U) || (GET_BYTES(to_send, 4, 4) != 0x0U)) {
+        tx = 0;
+      }
     }
   }
 
