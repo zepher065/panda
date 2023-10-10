@@ -51,6 +51,8 @@ const CanMsg HYUNDAI_CANFD_HDA1_TX_MSGS[] = {
   {0x1A0, 0, 32}, // CRUISE_INFO
   {0x1CF, 2, 8},  // CRUISE_BUTTON
   {0x1E0, 0, 16}, // LFAHDA_CLUSTER
+  {0x16a, 0, 32},
+  {0x165, 0, 24},
 };
 
 
