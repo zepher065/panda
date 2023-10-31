@@ -54,6 +54,9 @@ const CanMsg HYUNDAI_CANFD_HDA1_TX_MSGS[] = {
   {0x160, 0, 16}, // ADRV_0x160
   {0x7D0, 0, 8},  // tester present for radar ECU disable
   {0x7b1, 0, 8},
+  {0x16a, 0, 32},
+  {0x165, 0, 24},
+  {0x7b1, 1, 8},
   {0x16a, 1, 32},
   {0x165, 1, 24},
 };
