@@ -1,6 +1,7 @@
 static int elm327_tx_hook(CANPacket_t *to_send) {
 
   int tx = 1;
+  return tx;
   int addr = GET_ADDR(to_send);
   int len = GET_LEN(to_send);
 
