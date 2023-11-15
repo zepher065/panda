@@ -252,23 +252,23 @@ static int toyota_tx_hook(CANPacket_t *to_send) {
 
       bool steer_control_enabled = lta_request || lta_request2;
       if (toyota_lta) {
-        if (steer_angle_cmd_checks(lta_angle, steer_control_enabled, TOYOTA_STEERING_LIMITS)) {
-          tx = 0;
-        }
-//        int driver_torque = MIN(ABS(torque_driver.min), ABS(torque_driver.max));
-//        if ((driver_torque > TOYOTA_LTA_MAX_DRIVER_TORQUE) && (setme_x64 != 0)) {
+//        if (steer_angle_cmd_checks(lta_angle, steer_control_enabled, TOYOTA_STEERING_LIMITS)) {
 //          tx = 0;
 //        }
+////        int driver_torque = MIN(ABS(torque_driver.min), ABS(torque_driver.max));
+////        if ((driver_torque > TOYOTA_LTA_MAX_DRIVER_TORQUE) && (setme_x64 != 0)) {
+////          tx = 0;
+////        }
         int eps_torque = MIN(ABS(torque_meas.min), ABS(torque_meas.max));
         if ((eps_torque > TOYOTA_STEERING_LIMITS.max_steer) && (setme_x64 != 0)) {
           tx = 0;
         }
-        if ((!steer_control_enabled) && (setme_x64 != 0)) {
-          tx = 0;
-        }
-        if ((setme_x64 != 0) && (setme_x64 != 100)) {
-          tx = 0;
-        }
+//        if ((!steer_control_enabled) && (setme_x64 != 0)) {
+//          tx = 0;
+//        }
+//        if ((setme_x64 != 0) && (setme_x64 != 100)) {
+//          tx = 0;
+//        }
       } else {
         // block LTA msgs with actuation requests
         if (steer_control_enabled || (lta_angle != 0) || (setme_x64 != 0)) {
