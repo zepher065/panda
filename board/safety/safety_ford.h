@@ -296,12 +296,10 @@ static bool ford_tx_hook(CANPacket_t *to_send) {
   if (addr == FORD_Steering_Data_FD1) {
     // Violation if resume button is pressed while controls not allowed, or
     // if cancel button is pressed when cruise isn't engaged.
-    bool allowed_cancel = (GET_BIT(to_send, 8U) == 1U) && cruise_engaged_prev;
-    bool allowed_resume = (GET_BIT(to_send, 25U) == 1U) && controls_allowed;
-
-    if (!(allowed_resume || allowed_cancel)) {
+    if (button_checks((GET_BIT(to_send, 25U) == 1U), false, (GET_BIT(to_send, 8U) == 1U), true)) {
       tx = 0;
     }
+
 
 //    bool violation = false;
 //    violation |= (GET_BIT(to_send, 8U) == 1U) && !cruise_engaged_prev;   // Signal: CcAslButtnCnclPress (cancel)

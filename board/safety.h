@@ -695,6 +695,20 @@ bool steer_angle_cmd_checks(int desired_angle, bool steer_control_enabled, const
   return violation;
 }
 
+bool button_checks(bool resume_pressed, bool set_pressed, bool cancel_pressed, bool pcm_cruise) {
+  UNUSED(pcm_cruise);
+  UNUSED(set_pressed);  // todo: this should never be sent
+
+  bool allowed_cancel = cancel_pressed && cruise_engaged_prev;
+  bool allowed_resume = resume_pressed && controls_allowed;
+
+  bool violation = false;
+  if (!(allowed_resume || allowed_cancel)) {
+    violation = true;
+  }
+  return violation;
+}
+
 void pcm_cruise_check(bool cruise_engaged) {
   // Enter controls on rising edge of stock ACC, exit controls if stock ACC disengages
   if (!cruise_engaged) {
