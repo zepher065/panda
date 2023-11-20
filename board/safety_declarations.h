@@ -186,6 +186,7 @@ bool longitudinal_transmission_rpm_checks(int desired_transmission_rpm, const Lo
 bool longitudinal_brake_checks(int desired_brake, const LongitudinalLimits limits);
 bool longitudinal_interceptor_checks(CANPacket_t *to_send);
 void pcm_cruise_check(bool cruise_engaged);
+void buttons_check(bool resume_pressed, bool set_pressed, bool cancel_pressed);
 
 typedef safety_config (*safety_hook_init)(uint16_t param);
 typedef void (*rx_hook)(CANPacket_t *to_push);

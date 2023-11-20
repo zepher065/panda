@@ -56,7 +56,8 @@ def checksum(msg):
 class Buttons:
   CANCEL = 0
   RESUME = 1
-  TJA_TOGGLE = 2
+  SET = 2
+  TJA_TOGGLE = 3
 
 
 # Ford safety has four different configurations tested here:
@@ -194,9 +195,23 @@ class TestFordSafetyBase(common.PandaCarSafetyTest):
     values = {
       "CcAslButtnCnclPress": 1 if button == Buttons.CANCEL else 0,
       "CcAsllButtnResPress": 1 if button == Buttons.RESUME else 0,
+      "CcAslButtnSetPress": 1 if button == Buttons.SET else 0,
       "TjaButtnOnOffPress": 1 if button == Buttons.TJA_TOGGLE else 0,
     }
     return self.packer.make_can_msg_panda("Steering_Data_FD1", bus, values)
+
+  def test_buttons(self):
+    for bus in (0, 2):
+      for controls_allowed in (True, False):
+        with self.subTest(bus=bus, controls_allowed=controls_allowed):
+          self.safety.set_controls_allowed(controls_allowed)
+          self.safety.set_cruise_engaged_prev(False)
+          self.assertFalse(self._tx(self._acc_button_msg(button=Buttons.SET, bus=bus)))
+          self.assertEqual(controls_allowed, self._tx(self._acc_button_msg(button=Buttons.RESUME, bus=bus)))
+          self.assertFalse(self._tx(self._acc_button_msg(button=Buttons.CANCEL, bus=bus)))
+
+          self.safety.set_cruise_engaged_prev(True)
+          self.assertTrue(self._tx(self._acc_button_msg(button=Buttons.CANCEL, bus=bus)))
 
   def test_rx_hook(self):
     # checksum, counter, and quality flag checks
