@@ -10,9 +10,11 @@ bool safety_config_valid() {
 
   for (int i = 0; i < current_safety_config.rx_checks_len; i++) {
     const RxCheck addr = current_safety_config.rx_checks[i];
-    bool valid2 = is_msg_valid(current_safety_config.rx_checks, i);
-//    bool valid = addr.msg_seen && !addr.lagging && addr.valid_checksum && (addr.wrong_counters < MAX_WRONG_COUNTERS) && addr.valid_quality_flag;
-    if (!valid2) {
+//    bool valid2 = is_msg_valid(current_safety_config.rx_checks, i); // TODO: use this
+    // check msg if it's seen or non-optional
+    bool check_msg = addr.msg_seen || !addr.optional;
+    bool valid = addr.msg_seen && !addr.lagging && addr.valid_checksum && (addr.wrong_counters < MAX_WRONG_COUNTERS) && addr.valid_quality_flag;
+    if (check_msg && !valid) {
       printf("i %d seen %d lagging %d optional %d valid checksum %d wrong counters %d valid quality flag %d\n", i, addr.msg_seen, addr.lagging, addr.optional, addr.valid_checksum, addr.wrong_counters, addr.valid_quality_flag);
       return false;
     }
