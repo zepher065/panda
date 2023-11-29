@@ -122,6 +122,7 @@ typedef struct {
 typedef struct {
   // const params
   const CanMsgCheck msg[MAX_ADDR_CHECK_MSGS];  // check either messages (e.g. honda steer)
+  const bool optional;  // if true, rate check will not be performed until it is seen
 
   // dynamic flags
   bool msg_seen;

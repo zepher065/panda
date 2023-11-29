@@ -180,6 +180,12 @@ void safety_tick(const safety_config *cfg) {
       // Quite conservative to not risk false triggers.
       // 2s of lag is worse case, since the function is called at 1Hz
       bool lagging = elapsed_time > MAX(cfg->rx_checks[i].msg[cfg->rx_checks[i].index].expected_timestep * MAX_MISSED_MSGS, 1e6);
+      if (lagging) {
+        print("lagging! i: "); puth(i); print(", index: "); puth(cfg->rx_checks[i].index); print(", optional: "); puth(cfg->rx_checks[i].optional); print("\n");
+      }
+      if (cfg->rx_checks[i].optional) {
+        lagging = false;
+      }
       cfg->rx_checks[i].lagging = lagging;
       if (lagging) {
         controls_allowed = false;

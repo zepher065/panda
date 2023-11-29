@@ -6,7 +6,8 @@ rm -f ../libpanda/*.gcda
 scons -j$(nproc) -D --coverage
 
 # run safety tests to generate coverage data
-./test.sh
+#./test.sh
+python -m unittest discover .
 
 # generate and open report
 if [ "$1" == "--report" ]; then
