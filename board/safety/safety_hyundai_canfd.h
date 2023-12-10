@@ -268,6 +268,8 @@ static bool hyundai_canfd_tx_hook(CANPacket_t *to_send) {
 
     bool violation = false;
 
+    print("desired_accel_val: "); puth(desired_accel_val); print("\n");
+
     if (hyundai_longitudinal) {
       violation |= longitudinal_accel_checks(desired_accel_raw, HYUNDAI_LONG_LIMITS);
       violation |= longitudinal_accel_checks(desired_accel_val, HYUNDAI_LONG_LIMITS);
