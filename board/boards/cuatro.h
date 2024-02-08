@@ -67,6 +67,10 @@ void cuatro_set_bootkick(BootState state) {
   //set_gpio_output(GPIOC, 12, state != BOOT_RESET);
 }
 
+void cuatro_sound_enable(bool enabled) {
+  set_gpio_output(GPIOA, 5, enabled);
+}
+
 void cuatro_init(void) {
   red_chiplet_init();
 
@@ -116,6 +120,10 @@ void cuatro_init(void) {
 
   // Clock source
   clock_source_init();
+
+  // Sound codec
+  sound_init();
+  set_gpio_output(GPIOA, 5, true);
 }
 
 board board_cuatro = {
@@ -139,7 +147,7 @@ board board_cuatro = {
   .read_current_mA = cuatro_read_current_mA,
   .set_fan_enabled = cuatro_set_fan_enabled,
   .set_ir_power = tres_set_ir_power,
-  .set_siren = unused_set_siren,
+  .set_siren = cuatro_sound_enable,
   .set_bootkick = cuatro_set_bootkick,
   .read_som_gpio = tres_read_som_gpio
 };
