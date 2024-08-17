@@ -71,6 +71,10 @@ void cuatro_sound_enable(bool enabled) {
   set_gpio_output(GPIOA, 5, enabled);
 }
 
+void cuatro_set_siren_enabled(bool enabled) {
+  UNUSED(enabled);
+}
+
 void cuatro_init(void) {
   red_chiplet_init();
 
@@ -154,7 +158,7 @@ board board_cuatro = {
   .read_current_mA = cuatro_read_current_mA,
   .set_fan_enabled = cuatro_set_fan_enabled,
   .set_ir_power = tres_set_ir_power,
-  .set_siren = cuatro_sound_enable,
+  .set_siren = cuatro_set_siren_enabled,
   .set_bootkick = cuatro_set_bootkick,
   .read_som_gpio = tres_read_som_gpio
 };
