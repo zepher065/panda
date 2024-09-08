@@ -7,7 +7,7 @@ def get_test_string():
   return b"test" + os.urandom(10)
 
 if __name__ == "__main__":
-  p = PandaJungle()
+  p = PandaJungle(cli=True)
   print(f"Connected to: {p._serial}: {p.get_version()}")
 
   p.set_safety_mode(PandaJungle.SAFETY_ALLOUTPUT)

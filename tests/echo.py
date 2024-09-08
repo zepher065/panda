@@ -4,7 +4,7 @@ from panda import Panda
 # This script is intended to be used in conjunction with the echo_loopback_test.py test script from panda jungle.
 # It sends a reversed response back for every message received containing b"test".
 if __name__ == "__main__":
-  p = Panda()
+  p = Panda(cli=True)
   p.set_safety_mode(Panda.SAFETY_ALLOUTPUT)
   p.set_power_save(False)
 

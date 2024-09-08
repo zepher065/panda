@@ -11,7 +11,9 @@ def sec_since_boot():
   return time.time()
 
 def can_printer():
-  p = Panda()
+
+  p = Panda(cli=True)
+
   print(f"Connected to id: {p.get_serial()[0]}: {p.get_version()}")
   time.sleep(1)
 

@@ -11,7 +11,8 @@ def sec_since_boot():
   return time.time()
 
 def can_printer():
-  p = PandaJungle()
+  p = PandaJungle(cli=True)
+
   print(f"Connected to: {p._serial}: {p.get_version()}")
   time.sleep(1)
 

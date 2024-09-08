@@ -7,7 +7,7 @@ def get_test_string():
   return b"test" + os.urandom(10)
 
 if __name__ == "__main__":
-  p = Panda()
+  p = Panda(cli=True)
   print(f"Connected to id: {p.get_serial()[0]}: {p.get_version()}")
 
   p.set_safety_mode(Panda.SAFETY_ALLOUTPUT)

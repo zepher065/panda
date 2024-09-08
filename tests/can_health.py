@@ -16,7 +16,9 @@ def colorize_errors(value):
 
 if __name__ == "__main__":
 
-  panda = Panda()
+
+  panda = Panda(cli=True)
+
   while True:
     print(chr(27) + "[2J") # clear screen
     print(f"Connected to " + ("internal panda" if panda.is_internal() else "External panda") + f" id: {panda.get_serial()[0]}: {panda.get_version()}")

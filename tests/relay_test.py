@@ -2,7 +2,7 @@
 import time
 from panda import Panda
 
-p = Panda()
+p = Panda(cli=True)
 
 while True:
   p.set_safety_mode(Panda.SAFETY_TOYOTA)
@@ -13,4 +13,3 @@ while True:
   p.send_heartbeat()
   print("OFF")
   time.sleep(1)
-

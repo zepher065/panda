@@ -5,7 +5,7 @@ import time
 from panda import Panda
 
 if __name__ == "__main__":
-  p = Panda()
+  p = Panda(cli=True)
   print(p.get_serial())
   print(p.health())
 

@@ -15,7 +15,7 @@ def colorize_errors(value):
     return str(value)
 
 if __name__ == "__main__":
-  jungle = PandaJungle()
+  jungle = PandaJungle(cli=True)
 
   while True:
     print(chr(27) + "[2J") # clear screen

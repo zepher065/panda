@@ -224,8 +224,7 @@ class Panda:
   FLAG_FORD_LONG_CONTROL = 1
   FLAG_FORD_CANFD = 2
 
-  def __init__(self, serial: str | None = None, claim: bool = True, disable_checks: bool = True, can_speed_kbps: int = 500):
-    self._connect_serial = serial
+  def __init__(self, serial: str | None = None, claim: bool = True, disable_checks: bool = True, can_speed_kbps: int = 500, cli: bool = False):
     self._disable_checks = disable_checks
 
     self._handle: BaseHandle
@@ -233,8 +232,28 @@ class Panda:
     self.can_rx_overflow_buffer = b''
     self._can_speed_kbps = can_speed_kbps
 
+    if cli:
+        self._connect_serial = self._select_panda_cli()
+    else:
+        self._connect_serial = serial
+
     # connect and set mcu type
     self.connect(claim)
+
+  def _select_panda_cli(self):
+    pandas = self.list()
+    if len(pandas) == 1:
+        return pandas[0]
+
+    while True:
+        print("Multiple devices available:")
+        for idx, serial in enumerate(pandas):
+            print(f"{[idx]}: {serial}")
+        try:
+            choice = int(input("Choose serial [0]:") or "0")
+            return pandas[choice]
+        except (ValueError, IndexError):
+            print("Enter a valid index.")
 
   def __enter__(self):
     return self

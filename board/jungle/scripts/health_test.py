@@ -8,7 +8,7 @@ if __name__ == "__main__":
   i = 0
   pi = 0
 
-  pj = PandaJungle()
+  pj = PandaJungle(cli=True)
   while True:
     st = time.monotonic()
     while time.monotonic() - st < 1:
