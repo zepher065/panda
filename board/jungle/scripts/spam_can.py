@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 import os
 import random
-from panda import Panda
+from panda import PandaJungle
 
 def get_test_string():
   return b"test" + os.urandom(10)
 
 if __name__ == "__main__":
-  p = Panda()
-  print(f"Connected to id: {p.get_serial()[0]}: {p.get_version()}")
+  p = PandaJungle()
+  print(f"Connected to: {p._serial}: {p.get_version()}")
 
-  p.set_safety_mode(Panda.SAFETY_ALLOUTPUT)
+  p.set_safety_mode(PandaJungle.SAFETY_ALLOUTPUT)
 
   print("Spamming all buses...")
   while True:
