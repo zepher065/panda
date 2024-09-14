@@ -247,6 +247,7 @@ class Panda:
 
     while True:
         print("Multiple devices available:")
+        pandas.sort()
         for idx, serial in enumerate(pandas):
             print(f"{[idx]}: {serial}")
         try:
