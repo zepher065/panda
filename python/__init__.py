@@ -391,6 +391,12 @@ class Panda:
 
     return context, usb_handle, usb_serial, bootstub, bcd
 
+  def is_connected_spi(self):
+    return isinstance(self._handle, PandaSpiHandle)
+
+  def is_connected_usb(self):
+    return isinstance(self._handle, PandaUsbHandle)
+
   @classmethod
   def list(cls):
     ret = cls.usb_list()
