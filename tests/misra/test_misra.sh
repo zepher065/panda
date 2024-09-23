@@ -28,7 +28,7 @@ fi
 
 cd $PANDA_DIR
 if [ -z "${SKIP_BUILD}" ]; then
-  scons -j8
+  scons -j8 --compile_db
 fi
 
 CHECKLIST=$DIR/checkers.txt
@@ -36,7 +36,7 @@ echo "Cppcheck checkers list from test_misra.sh:" > $CHECKLIST
 
 cppcheck() {
   # get all gcc defines: arm-none-eabi-gcc -dM -E - < /dev/null
-  COMMON_DEFINES="-D__GNUC__=9 -UCMSIS_NVIC_VIRTUAL -UCMSIS_VECTAB_VIRTUAL"
+  COMMON_DEFINES="-D__GNUC__=9"
 
   # note that cppcheck build cache results in inconsistent results as of v2.13.0
   OUTPUT=$DIR/.output.log
@@ -45,10 +45,9 @@ cppcheck() {
   echo -e ""${@//$PANDA_DIR/}"\n\n" >> $CHECKLIST # (absolute path removed)
 
   $CPPCHECK_DIR/cppcheck --inline-suppr -I $PANDA_DIR/board/ \
-          -I "$(arm-none-eabi-gcc -print-file-name=include)" \
-          -I $PANDA_DIR/board/stm32f4/inc/ -I $PANDA_DIR/board/stm32h7/inc/ \
+          --library=gnu.cfg --suppress=missingIncludeSystem \
           --suppressions-list=$DIR/suppressions.txt --suppress=*:*inc/* \
-          --suppress=*:*include/* --error-exitcode=2 --check-level=exhaustive --safety \
+          --error-exitcode=2 --check-level=exhaustive --safety \
           --platform=arm32-wchar_t4 $COMMON_DEFINES --checkers-report=$CHECKLIST.tmp \
           --std=c11 "$@" |& tee $OUTPUT
 
@@ -62,20 +61,23 @@ cppcheck() {
   fi
 }
 
-PANDA_OPTS="--enable=all --disable=unusedFunction -DPANDA --addon=misra"
+if [ -z "$PANDA_SYSTEM_LEVEL_ONLY" ]; then
+# Test whole Panda project for unused functions / constants
+printf "\n${GREEN}** Panda project - tests: Cppcheck whole program + MISRA per translation unit **${NC}\n"
+cppcheck  --project=$PANDA_DIR/compile_commands.json \
+          --enable=all --addon=misra \
+          -i$PANDA_DIR/board/bootstub.c \
+          -i$PANDA_DIR/board/jungle/ \
+          -i$PANDA_DIR/crypto/
+# TODO enable bootstub and jungle for the whole build
+# Note: MISRA system level tests (e.g. rule 2.5) not supported by cppcheck 2.15 with --project argument
 
-printf "\n${GREEN}** PANDA F4 CODE **${NC}\n"
-cppcheck $PANDA_OPTS -DSTM32F4 -DSTM32F413xx $PANDA_DIR/board/main.c
 
-printf "\n${GREEN}** PANDA H7 CODE **${NC}\n"
-cppcheck $PANDA_OPTS -DSTM32H7 -DSTM32H725xx $PANDA_DIR/board/main.c
-
-# unused needs to run globally
-#printf "\n${GREEN}** UNUSED ALL CODE **${NC}\n"
-#cppcheck --enable=unusedFunction --quiet $PANDA_DIR/board/
-
-printf "\n${GREEN}Success!${NC} took $SECONDS seconds\n"
-
+# Test standalone Panda program. (Unused functions / constants will be more strict than whole project check)
+  printf "\n${GREEN}** Panda standalone - tests: Cppcheck whole program **${NC}\n"
+  cppcheck  --project=$PANDA_DIR/compile_commands_panda.json \
+            --enable=all --addon=misra
+fi
 
 # ensure list of checkers is up to date
 cd $DIR
